@@ -1,0 +1,119 @@
+name: Specifications  
+on: [push]
+jobs:
+  deploy_source:
+    name: Deploy API Using Lambda
+    strategy:
+      matrix:
+        node-version: [12.x]
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install and build
+        run: |
+          npm ci
+          npm run build --if-present
+        env:
+          CI: true
+
+      - name: /specifications get lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-g.zip specifications/get/index.js node_modules
+      - name: specification get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-g
+            zip_file: m-s-specifications-g.zip
+      - name: /specifications post lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-po.zip specifications/post/index.js node_modules
+      - name: specification get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-po
+            zip_file: m-s-specifications-po.zip
+      - name: /specifications/{specification_id} get lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-g.zip specifications/specification_id/get/index.js node_modules
+      - name: specification get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-g
+            zip_file: m-s-specifications-specification-g.zip
+      - name: /specifications/{specification_id} put lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-pu.zip specifications/specification_id/put/index.js node_modules
+      - name: specification get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-pu
+            zip_file: m-s-specifications-specification-pu.zip
+      - name: /specifications/{specification_id} delete lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-d.zip specifications/specification_id/delete/index.js node_modules
+      - name: specification get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-d
+            zip_file: m-s-specifications-specification-d.zip          
+      - name: /specifications/{specification_id}/tags get lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-tags-g.zip specifications/specification_id/tags/get/index.js node_modules
+      - name: specifications get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-tags-g
+            zip_file: m-s-specifications-specification-tags-g.zip
+      - name: /specifications/{specification_id}/tags post lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-tags-po.zip specifications/specification_id/tags/post/index.js node_modules
+      - name: specifications get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-tags-po
+            zip_file: m-s-specifications-specification-tags-po.zip
+      - name: /specifications/{specification_id}/tags/{tag_id} delete lambda deploy zip
+        uses: postman-open-technologies/specifications@main
+        with:
+            args: zip -qq -r m-s-specifications-specification-tags-tag-d.zip specifications/specification_id/tags/tag_id/delete/index.js node_modules
+      - name: specifications get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+            aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws_region: us-west-1
+            function_name: m-s-specifications-specification-tags-tag-d
+            zip_file: m-s-specifications-specification-tags-tag-d.zip            

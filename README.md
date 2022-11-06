@@ -1,2 +1,2 @@
-# API Specifications
-This conversation is now happening over at the API Specification Toolbox - https://github.com/api-specification-toolbox/community/blob/main/README.md
+# API Lifecycle Specifications
+This is an [API for managing API platform specifications](https://www.postman.com/postman/workspace/postman-open-technologies-lifecycle-control/api/dbd4fc85-b5d1-4f94-aa89-d34fef5ae913/version/76f0754d-8b95-4dbc-9f6b-332501fbe443?tab=define), helping guide producers and consumers in their API journey--Leave an issue if you have any questions.
